@@ -9,7 +9,7 @@ import * as RootNavigation from '../RestaurantProje/RootNavigation';
 
 import HomeScreen from './src/HomeScreen'
 import LoginScreen from './src/LoginScreen';
-import ForgotPasswordScreen from './src/ForgotPasswordScreen';
+import RegisterScreen from './src/RegisterScreen';
 
 
 const Stack = createStackNavigator()
@@ -55,10 +55,10 @@ export default function App() {
           }
           />
           <Stack.Screen
-            name="Forgot"
-            component={ForgotPasswordScreen}
+            name="Register"
+            component={RegisterScreen}
             options={ () => ({
-              title: 'Renew password'
+              title: 'Register'
             })
           }
           />

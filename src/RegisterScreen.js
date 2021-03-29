@@ -1,13 +1,52 @@
-import React from "react";
-import { StyleSheet, TextInput, TouchableOpacity, Text, ScrollView } from "react-native";
+import React, {createContext, useContext, useState} from "react";
+import { StyleSheet, TextInput, TouchableOpacity, Text, ScrollView, AppRegistry } from "react-native";
+import { gql, useMutation } from '@apollo/client'
 
-function ForgotPasswordScreen() {
-  const [firstName, onChangeFirstName] = React.useState("");
-  const [lastName, onChangeLastName] = React.useState("");
-  const [email, onChangeEmail] = React.useState("");
-  const [password, onChangePassword] = React.useState("");
+const CREATE_USER_MUTATION = gql`
+mutation createUser($data: CreateUserInput!) {
+    createUser(data: $data){
+        user {
+          id
+          firstName
+          lastName
+          email
+          password
+        }
+    }
+}
+`
+
+function SignUp() {
+
+  const [createUser, { loading, error }] = useMutation(CREATE_USER_MUTATION, {
+
+    onCompleted:(data) => {
+     console.log(data);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  
+    variables: {
+     "data":{
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+        role: "CUSTOMER"
+      }
+    }
+  })
+
+  const [firstName, onChangeFirstName] = useState('');
+  const [lastName, onChangeLastName] = useState('');
+  const [email, onChangeEmail] = useState('');
+  const [password, onChangePassword] = useState('');
+
+  if (loading) return <Text>Loading.. </Text>;
+  if (error) return <Text>An error occurred</Text>;
   return (
-    <ScrollView style={{flexDirection: 'column', padding:10}}>
+    <ScrollView style={{flexDirection: 'column', padding:10, flex:1}}>
       <Text style={styles.infotext}> Please registered in the system enter your phone / e-mail information!</Text>
       <TextInput
         style={styles.inputview}
@@ -38,8 +77,8 @@ function ForgotPasswordScreen() {
         inlineImagePadding={15}
         inlineImageLeft= 'usericon'
         secureTextEntry={true}/>
-      <TouchableOpacity style={styles.sendButton}>
-        <Text style={styles.sendtext}>Send</Text>
+      <TouchableOpacity style={styles.sendButton} onPress={() => createUser()}>
+        <Text style={styles.sendtext}>Save</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -80,4 +119,4 @@ const styles = StyleSheet.create({
   }
   })
   
-export default ForgotPasswordScreen;
+export default SignUp;

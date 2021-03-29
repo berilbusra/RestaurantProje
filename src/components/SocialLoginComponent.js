@@ -1,9 +1,10 @@
 import React from 'react';
-import {  StyleSheet, View, Text, TouchableOpacity, Image} from "react-native";
+import {  StyleSheet, TouchableOpacity} from "react-native";
+import {View, Text, Image } from 'react-native-ui-lib';
 
 const SocialLoginComponent = () => {
   return (
-    <View style={styles.buttonview}>
+    <View margin-15 paddingB-15 style={{borderBottomColor: '#B2B2B2' , borderBottomWidth:1, alignItems: 'center'}}>
         <Text style={styles.text}>with your social network </Text>
         <View style={{flexDirection:'row'}}>
             <TouchableOpacity style={styles.googleButton}>
@@ -14,7 +15,6 @@ const SocialLoginComponent = () => {
             </TouchableOpacity>
         </View>
     </View>
-
   );
 };
 
@@ -51,13 +51,6 @@ const styles = StyleSheet.create({
       width:15,
       height: 25 ,
       alignSelf: 'center',
-  },
-  buttonview: {
-    margin: 15,
-    paddingBottom:15,
-    borderBottomColor: '#B2B2B2' ,
-    borderBottomWidth:1,
-    alignItems: 'center'
   },
 });
 

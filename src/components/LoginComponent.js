@@ -1,12 +1,13 @@
 import React, {useState}from 'react';
-import { SafeAreaView, StyleSheet, TextInput, View, Text, TouchableOpacity} from "react-native";
+import { SafeAreaView, StyleSheet, TextInput, TouchableOpacity} from "react-native";
+import {View, Text } from 'react-native-ui-lib';
 import * as RootNavigation from '../../RootNavigation';
 
 import CheckBox from '@react-native-community/checkbox';
 
 import { gql, useMutation } from '@apollo/client'
 
-/*const TOKEN_AUTH = gql`
+const TOKEN_AUTH = gql`
 mutation tokenAuth($email: String, $password: String) {
     login(email: $email, password: $password){
         token
@@ -17,26 +18,33 @@ mutation tokenAuth($email: String, $password: String) {
         }
     }
 }
-`*/
-
+`
 const LoginComponent = () => {
-  const onPress=() => RootNavigation.navigate('Forgot');
+  const onPress=() => RootNavigation.navigate('Register');
   const [toggleCheckBox, setToggleCheckBox] = useState(false)
   const [toggleCheckBox2, setToggleCheckBox2] = useState(false)
 
-  const [email, onChangeEmail] = React.useState("");
-  const [password, onChangePassword] = React.useState("");
-  /*const [login, {error}] = useMutation(TOKEN_AUTH, {
+  const [email, onChangeEmail] = useState("");
+  const [password, onChangePassword] = useState("");
+
+  const [login, { loading, error }] = useMutation(TOKEN_AUTH, {
+    onCompleted:(data) => {
+      /*          **/
+     },
+     onError: (error) => {
+       console.log(error);
+     }, 
     variables: {
       email: email,
       password: password,
     }
-  });*/
+  });
 
- // if (error) return <Text>ERROR ...</Text>;
+  if (loading) return <Text>Loading.. </Text>;
+  if (error) return <Text>An error occurred</Text>;
   return (
     <SafeAreaView >
-      <View style={{flexDirection: 'column', padding:10}}>
+      <View flexstyle={{flexDirection: 'column', padding:10}}>
         <TextInput
             style={styles.inputview}
             onChangeText={(value) => onChangeEmail(value)}
@@ -62,13 +70,13 @@ const LoginComponent = () => {
             value={toggleCheckBox}
             onValueChange={(newValue) => setToggleCheckBox(newValue)}/>
         <Text style={styles.smalltext}>Remember Me</Text>
-        
-        <TouchableOpacity onPress = {onPress}>
+      
+        <TouchableOpacity>
             <Text style={styles.smalltext}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.signinButton}>
+      <TouchableOpacity style={styles.signinButton} onPress={() => login()}>
         <Text style={styles.signintext}  >Sign In</Text> 
       </TouchableOpacity>
 
@@ -80,7 +88,10 @@ const LoginComponent = () => {
             onValueChange={(newValue) => setToggleCheckBox2(newValue)}/>
         <Text style={styles.termsconditions}> I accept the</Text>
         <Text style={styles.termsconditions2}> terms and conditions</Text>
-        <Text style={styles.signuptext}>Sign Up</Text>
+
+        <TouchableOpacity onPress = {onPress}>
+          <Text style={styles.signuptext}>Sign Up</Text>
+        </TouchableOpacity>
      </View>
 
     </SafeAreaView>
